@@ -31,17 +31,17 @@ imshow(c)
 % Hough transform
 a = imfilter(rgb2gray(imread('callender.jpg')),h);
 b = imbinarize(a);
-BW = edge(b,'canny');
+BW = edge(b);
 [H,T,R] = hough(BW);
 imshow(H,[],'XData',T,'YData',R,...
             'InitialMagnification','fit');
 xlabel('\theta'), ylabel('\rho');
 axis on, axis normal, hold on;
 
-P  = houghpeaks(H,44,'threshold',ceil(0.0000001*max(H(:))));
+P  = houghpeaks(H,44,'threshold',ceil(0.001*max(H(:))));
 x = T(P(:,2)); y = R(P(:,1));
 plot(x,y,'s','color','white');
-lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
+lines = houghlines(BW,T,R,P,'FillGap',2,'MinLength',3);
 figure, imshow(b), hold on
 max_len = 0;
 for k = 1:length(lines)
