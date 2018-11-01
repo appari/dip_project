@@ -6,7 +6,7 @@ inp_bw = rgb2gray(inp);
 %% Trying Different filters on the image.
 
 % Laplacian
-subplot()
+
 h = fspecial('laplacian');
 filteredout = imfilter(rgb2gray(imread('callender.jpg')),h);
 imshow(filteredout);
