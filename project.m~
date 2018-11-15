@@ -1,7 +1,7 @@
 %% Scan The Input image
 inp = imread('callender.jpg');
 inp2 = imread('calender2.png');
-inp_bw = rgb2gray(inp);
+inp_bw = rgb2gray(inp2);
 
 %% Trying Different filters on the image.
 
@@ -49,7 +49,7 @@ y = y(x==-90|x==0);
 x = x(x==-90|x==0);
 plot(x,y,'s','color','white');
 lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
-figure, imshow(inp), hold on
+figure, imshow(b), hold on
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
@@ -89,7 +89,7 @@ y = y(x==-90|x==0);
 x = x(x==-90|x==0);
 plot(x,y,'s','color','white');
 lines = houghlines(BW,T,R,P,'FillGap',2,'MinLength',5);
-figure, imshow(inp), hold on
+figure, imshow(b), hold on
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
