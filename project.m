@@ -1,14 +1,14 @@
 %% Scan The Input image
 inp = imread('callender.jpg');
 inp2 = imread('calender2.png');
-inp_bw = rgb2gray(inp);
+inp_bw = rgb2gray(inp2);
 
 %% Trying Different filters on the image.
 
 % Laplacian
 
 h = fspecial('laplacian');
-filteredout = imfilter(rgb2gray(imread('callender.jpg')),h);
+filteredout = imfilter(inp_bw,h);
 imshow(filteredout);
 
 
@@ -18,13 +18,13 @@ BWs = edge(inp_bw,'sobel', threshold*0.5);
 imshow(BWs);
 
 % Canny edge 
-filteredout = rgb2gray(imread('callender.jpg'));
+filteredout = inp_bw;
 canny = edge(filteredout,'canny');
 imshow(canny)
 
 % sobel + Laplacian
 h = fspecial('laplacian')';
-a = imfilter(rgb2gray(imread('callender.jpg')),h);
+a = imfilter(inp_bw,h);
 b = imbinarize(a);
 c = edge(b,'sobel');
 imshow(c)
@@ -32,7 +32,7 @@ imshow(c)
 
 % Hough transform on laplacian + sobel
 h = fspecial('laplacian');
-a = imfilter(rgb2gray(imread('callender.jpg')),h');
+a = imfilter(inp_bw,h');
 b = imbinarize(a);
 imshow(b)
 BW = edge(b,'sobel');
@@ -69,6 +69,9 @@ end
 %
 
 % Hough transform on sobel + sobel
+h = fspecial('laplacian');
+a = imfilter(inp_bw,h');
+b = imbinarize(a);
 [~, threshold] = edge(inp_bw, 'sobel');
 BWs = edge(inp_bw,'sobel', threshold*0.5);
 imshow(BWs)
@@ -80,17 +83,17 @@ imshow(H,[],'XData',T,'YData',R,...
 xlabel('\theta'), ylabel('\rho');
 axis on, axis normal, hold on;
 
-P  = houghpeaks(H,100,'threshold',ceil(0.0000001*max(H(:))));
+P  = houghpeaks(H,60,'threshold',ceil(0.001*max(H(:))));
 x = T(P(:,2)); y = R(P(:,1));
 y = y(x==-90|x==0);
 x = x(x==-90|x==0);
 plot(x,y,'s','color','white');
-lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
+lines = houghlines(BW,T,R,P,'FillGap',2,'MinLength',5);
 figure, imshow(b), hold on
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+%    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 
    % Plot beginnings and ends of lines
    plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
